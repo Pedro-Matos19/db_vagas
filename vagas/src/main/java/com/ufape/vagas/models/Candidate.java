@@ -1,6 +1,7 @@
 package com.ufape.vagas.models;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Candidate {
     private String name;
 
     @Column(name = "data_nascimento")
-    private java.time.LocalDate birthDate;
+    private LocalDate birthDate;
 
     @OneToOne
     @MapsId
@@ -35,7 +36,7 @@ public class Candidate {
 
     @ManyToMany
     @JoinTable(
-        name = "Estuda", 
+        name = "Estuda",
         joinColumns = @JoinColumn(name = "id_estudante"),
         inverseJoinColumns = @JoinColumn(name = "id_curso")
     )
@@ -43,25 +44,30 @@ public class Candidate {
 
     public Candidate() {}
 
+    // CONSTRUTOR DO SEU COLEGA ADICIONADO AQUI
+    public Candidate(String cpf, String name, LocalDate birthDate, User user, List<Skill> skills, List<Course> courses) {
+        super();
+        this.cpf = cpf;
+        this.name = name;
+        this.birthDate = birthDate;
+        this.user = user;
+        this.skills = skills;
+        this.courses = courses;
+    }
+
     // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
-    public java.time.LocalDate getBirthDate() { return birthDate; }
-    public void setBirthDate(java.time.LocalDate birthDate) { this.birthDate = birthDate; }
-
+    public LocalDate getBirthDate() { return birthDate; }
+    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
-
     public List<Skill> getSkills() { return skills; }
     public void setSkills(List<Skill> skills) { this.skills = skills; }
-
     public List<Course> getCourses() { return courses; }
     public void setCourses(List<Course> courses) { this.courses = courses; }
 }

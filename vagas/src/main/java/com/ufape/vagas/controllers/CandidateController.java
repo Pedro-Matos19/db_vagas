@@ -1,5 +1,6 @@
 package com.ufape.vagas.controllers;
 
+import com.ufape.vagas.dto.CandidateRequest;
 import com.ufape.vagas.models.Candidate;
 import com.ufape.vagas.services.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class CandidateController {
     private CandidateService candidateService;
 
     @PostMapping
-    public Candidate createCandidate(@RequestBody Candidate candidate) {
-        return candidateService.save(candidate);
+    public Candidate createCandidate(@RequestBody CandidateRequest candidateRequest) {
+        return candidateService.create(candidateRequest);
     }
 
     @GetMapping

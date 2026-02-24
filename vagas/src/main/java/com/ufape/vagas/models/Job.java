@@ -34,7 +34,7 @@ public class Job {
 
     @ManyToMany
     @JoinTable(
-        name = "Requer", 
+        name = "Requer",
         joinColumns = @JoinColumn(name = "id_vaga"),
         inverseJoinColumns = @JoinColumn(name = "id_habilidade")
     )
@@ -42,27 +42,32 @@ public class Job {
 
     public Job() {}
 
+    public Job(String title, String description, String type, BigDecimal salary, String status, Company company, List<Skill> requiredSkills) {
+        super();
+        this.title = title;
+        this.description = description;
+        this.type = type;
+        this.salary = salary;
+        this.status = status;
+        this.company = company;
+        this.requiredSkills = requiredSkills; 
+    }
+
+    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
-
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
-
     public BigDecimal getSalary() { return salary; }
     public void setSalary(BigDecimal salary) { this.salary = salary; }
-
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
-
     public Company getCompany() { return company; }
     public void setCompany(Company company) { this.company = company; }
-
     public List<Skill> getRequiredSkills() { return requiredSkills; }
     public void setRequiredSkills(List<Skill> requiredSkills) { this.requiredSkills = requiredSkills; }
 }
