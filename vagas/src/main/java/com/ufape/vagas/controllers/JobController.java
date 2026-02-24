@@ -1,5 +1,6 @@
 package com.ufape.vagas.controllers;
 
+import com.ufape.vagas.dto.JobRequest;
 import com.ufape.vagas.models.Job;
 import com.ufape.vagas.services.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class JobController {
     private JobService jobService;
 
     @PostMapping
-    public Job createJob(@RequestBody Job job) {
-        return jobService.save(job);
+    public Job createJob(@RequestBody JobRequest jobRequest) {
+        return jobService.create(jobRequest);
     }
 
     @GetMapping

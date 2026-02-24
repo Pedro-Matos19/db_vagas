@@ -50,7 +50,18 @@ public class Candidate {
 
     public Candidate() {}
 
-    // Getters e Setters
+    public Candidate(String cpf, String name, LocalDate birthDate, User user, List<Skill> skills,
+			List<Course> courses) {
+		super();
+		this.cpf = cpf;
+		this.name = name;
+		this.birthDate = birthDate;
+		this.user = user;
+		this.skills = skills;
+		this.courses = courses;
+	}
+
+	// Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

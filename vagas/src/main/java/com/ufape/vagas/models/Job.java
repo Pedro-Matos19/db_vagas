@@ -50,7 +50,21 @@ public class Job {
 
     public Job() {}
 
-    // Getters e Setters
+    public Job(String title, String description, String type, BigDecimal salary, String status, Company company,
+			List<Skill> skills) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.type = type;
+		this.salary = salary;
+		this.status = status;
+		this.company = company;
+		this.skills = skills;
+	}
+
+
+
+	// Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
