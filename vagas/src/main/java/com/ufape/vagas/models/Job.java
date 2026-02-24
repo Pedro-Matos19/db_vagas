@@ -2,9 +2,10 @@ package com.ufape.vagas.models;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
-@Table(name = "Vaga") 
+@Table(name = "Vaga")
 public class Job {
 
     @Id
@@ -25,15 +26,22 @@ public class Job {
     private BigDecimal salary;
 
     @Column(name = "status", length = 30)
-    private String status = "Aberta"; 
+    private String status = "Aberta";
 
     @ManyToOne
     @JoinColumn(name = "id_empresa", nullable = false)
     private Company company;
 
+    @ManyToMany
+    @JoinTable(
+        name = "Requer", 
+        joinColumns = @JoinColumn(name = "id_vaga"),
+        inverseJoinColumns = @JoinColumn(name = "id_habilidade")
+    )
+    private List<Skill> requiredSkills;
+
     public Job() {}
 
-    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -54,4 +62,7 @@ public class Job {
 
     public Company getCompany() { return company; }
     public void setCompany(Company company) { this.company = company; }
+
+    public List<Skill> getRequiredSkills() { return requiredSkills; }
+    public void setRequiredSkills(List<Skill> requiredSkills) { this.requiredSkills = requiredSkills; }
 }
