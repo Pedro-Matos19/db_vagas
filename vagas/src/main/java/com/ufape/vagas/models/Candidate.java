@@ -1,7 +1,17 @@
 package com.ufape.vagas.models;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Estudante") 
@@ -24,6 +34,13 @@ public class Candidate {
     @MapsId 
     @JoinColumn(name = "id_estudante")
     private User user;
+    
+    
+    @ManyToMany
+	@JoinTable(name = "possui",
+	joinColumns = @JoinColumn(name = "id_estudante"),
+	inverseJoinColumns = @JoinColumn(name = "id_habilidade"))
+    private List<Skill> skills;
 
     public Candidate() {}
 

@@ -1,7 +1,18 @@
 package com.ufape.vagas.models;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Vaga") 
@@ -30,6 +41,12 @@ public class Job {
     @ManyToOne
     @JoinColumn(name = "id_empresa", nullable = false)
     private Company company;
+    
+    @ManyToMany
+	@JoinTable(name = "requer",
+	joinColumns = @JoinColumn(name = "id_vaga"),
+	inverseJoinColumns = @JoinColumn(name = "id_habilidade"))
+    private List<Skill> skills;
 
     public Job() {}
 
