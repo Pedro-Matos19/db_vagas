@@ -71,4 +71,14 @@ public class Job {
 
     public Company getCompany() { return company; }
     public void setCompany(Company company) { this.company = company; }
+
+	public List<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<Skill> skills) {
+		this.skills = skills;
+	}
+    
+    
 }

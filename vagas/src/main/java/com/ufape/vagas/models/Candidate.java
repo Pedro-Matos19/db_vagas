@@ -41,6 +41,12 @@ public class Candidate {
 	joinColumns = @JoinColumn(name = "id_estudante"),
 	inverseJoinColumns = @JoinColumn(name = "id_habilidade"))
     private List<Skill> skills;
+    
+    @ManyToMany
+	@JoinTable(name = "estuda",
+	joinColumns = @JoinColumn(name = "id_estudante"),
+	inverseJoinColumns = @JoinColumn(name = "id_curso"))
+    private List<Course> courses;
 
     public Candidate() {}
 
@@ -59,4 +65,22 @@ public class Candidate {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+
+	public List<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<Skill> skills) {
+		this.skills = skills;
+	}
+
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
+    
+    
 }
