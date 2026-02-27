@@ -15,7 +15,6 @@ const CandidateForm: React.FC = () => {
     cpf: '',
     name: '',
     birthDate: '',
-    userId: 0,
     skillsId: [],
     coursesId: [],
   });
@@ -66,14 +65,17 @@ const CandidateForm: React.FC = () => {
       if (id) {
         await updateCandidate(Number(id), updateData);
       } else {
-        // Para simplificar, estamos hardcoding userId = 1 se não fornecido
-        // Em um app real, você selecionaria um usuário existente ou criaria um
-        const dataToSend = { ...createData, userId: createData.userId || 1 };
+        const dataToSend = { ...createData };
         await createCandidate(dataToSend);
       }
       navigate('/candidates');
-    } catch (err) {
-      setError('Erro ao salvar candidato.');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Erro ao salvar candidato. Verifique se o CPF já está cadastrado.');
+      }
       console.error(err);
     } finally {
       setLoading(false);
@@ -121,6 +123,8 @@ const CandidateForm: React.FC = () => {
             onChange={handleChange}
             className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
+            maxLength={14}
+            placeholder="000.000.000-00"
           />
         </div>
 
@@ -137,25 +141,6 @@ const CandidateForm: React.FC = () => {
             required
           />
         </div>
-
-        {!id && (
-          <div>
-            <label className="block text-gray-700 font-bold mb-2">
-              ID do Usuário (Temporário)
-            </label>
-            <input
-              type="number"
-              name="userId"
-              value={createData.userId}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Digite o ID de um usuário existente"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              * Em produção, isso seria um select ou criado automaticamente.
-            </p>
-          </div>
-        )}
 
         <div className="flex justify-end space-x-4 mt-6">
           <button

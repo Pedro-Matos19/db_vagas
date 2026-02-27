@@ -17,10 +17,6 @@ const CompanyForm: React.FC = () => {
     website: '',
     sector: '',
     description: '',
-    user: {
-      email: '',
-      password: '',
-    },
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,18 +47,7 @@ const CompanyForm: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      user: {
-        ...prev.user!,
-        [name]: value,
-      },
-    }));
-  };
-
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -74,8 +59,13 @@ const CompanyForm: React.FC = () => {
         await createCompany(formData);
       }
       navigate('/companies');
-    } catch (err) {
-      setError('Erro ao salvar empresa.');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Erro ao salvar empresa.');
+      }
       console.error(err);
     } finally {
       setLoading(false);
@@ -175,38 +165,6 @@ const CompanyForm: React.FC = () => {
             rows={4}
           />
         </div>
-
-        {!id && (
-          <>
-            <h3 className="text-lg font-bold mt-4 mb-2">Dados de Acesso</h3>
-            <div>
-              <label className="block text-gray-700 font-bold mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.user?.email || ''}
-                onChange={handleUserChange}
-                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required={!id}
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700 font-bold mb-2">
-                Senha
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.user?.password || ''}
-                onChange={handleUserChange}
-                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required={!id}
-              />
-            </div>
-          </>
-        )}
 
         <div className="flex justify-end space-x-4 mt-6">
           <button

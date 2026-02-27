@@ -27,7 +27,7 @@ export interface CandidateRequest {
   cpf: string;
   name: string;
   birthDate: string;
-  userId: number;
+  userId?: number;
   skillsId: number[];
   coursesId: number[];
 }

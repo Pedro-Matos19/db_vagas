@@ -16,7 +16,7 @@ export const createJob = async (job: JobRequest) => {
   return response.data;
 };
 
-export const updateJob = async (id: number, job: Job) => {
+export const updateJob = async (id: number, job: JobRequest) => {
   const response = await api.put<Job>(`/api/jobs/${id}`, job);
   return response.data;
 };
