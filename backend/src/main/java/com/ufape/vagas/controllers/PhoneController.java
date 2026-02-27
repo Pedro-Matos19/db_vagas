@@ -37,9 +37,7 @@ public class PhoneController {
         return phoneService.findById(id).map(phone -> {
             phone.setNumber(details.getNumber());
             
-            if (details.getCandidate() != null) {
-                phone.setCandidate(details.getCandidate());
-            }
+            
             
             Phone updated = phoneService.save(phone);
             return ResponseEntity.ok(updated);

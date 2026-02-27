@@ -39,9 +39,7 @@ public class CurriculumController {
             curriculum.setExperience(details.getExperience());
             curriculum.setPortfolioLink(details.getPortfolioLink());
             
-            if (details.getCandidate() != null) {
-                curriculum.setCandidate(details.getCandidate());
-            }
+            
             
             Curriculum updated = curriculumService.save(curriculum);
             return ResponseEntity.ok(updated);

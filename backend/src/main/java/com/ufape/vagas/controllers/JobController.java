@@ -34,21 +34,13 @@ public class JobController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Job> updateJob(@PathVariable Long id, @RequestBody Job details) {
-        return jobService.findById(id).map(job -> {
-            job.setTitle(details.getTitle());
-            job.setDescription(details.getDescription());
-            job.setType(details.getType());
-            job.setSalary(details.getSalary());
-            job.setStatus(details.getStatus());
-            
-            if (details.getCompany() != null) {
-                job.setCompany(details.getCompany());
-            }
-            
-            Job updated = jobService.save(job);
+    public ResponseEntity<Job> updateJob(@PathVariable Long id, @RequestBody JobRequest jobRequest) {
+        try {
+            Job updated = jobService.update(id, jobRequest);
             return ResponseEntity.ok(updated);
-        }).orElse(ResponseEntity.notFound().build());
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")

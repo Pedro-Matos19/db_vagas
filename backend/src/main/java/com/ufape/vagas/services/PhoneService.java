@@ -4,6 +4,7 @@ import com.ufape.vagas.models.Phone;
 import com.ufape.vagas.repositories.PhoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,10 +23,12 @@ public class PhoneService {
         return phoneRepository.findById(id);
     }
 
+    @Transactional
     public Phone save(Phone phone) {
         return phoneRepository.save(phone);
     }
 
+    @Transactional
     public void deleteById(Long id) {
         phoneRepository.deleteById(id);
     }

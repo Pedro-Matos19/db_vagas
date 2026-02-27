@@ -38,7 +38,6 @@ public class UserController {
             user.setEmail(userDetails.getEmail());
             user.setPassword(userDetails.getPassword());
             
-            // A linha do Role foi removida daqui para respeitar o banco de dados da equipe!
             
             User updatedUser = userService.save(user);
             return ResponseEntity.ok(updatedUser);

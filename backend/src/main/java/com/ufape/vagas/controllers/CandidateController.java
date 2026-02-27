@@ -38,11 +38,7 @@ public class CandidateController {
         return candidateService.findById(id).map(candidate -> {
             candidate.setName(details.getName());
             candidate.setCpf(details.getCpf());
-            candidate.setBirthDate(details.getBirthDate()); // <-- Correção feita aqui!
-            
-            if (details.getUser() != null) {
-                candidate.setUser(details.getUser());
-            }
+            candidate.setBirthDate(details.getBirthDate());
             
             Candidate updated = candidateService.save(candidate);
             return ResponseEntity.ok(updated);

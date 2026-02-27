@@ -42,10 +42,6 @@ public class CompanyController {
             company.setSector(details.getSector());
             company.setDescription(details.getDescription());
 
-            if (details.getUser() != null) {
-                company.setUser(details.getUser());
-            }
-
             Company updated = companyService.save(company);
             return ResponseEntity.ok(updated);
         }).orElse(ResponseEntity.notFound().build());

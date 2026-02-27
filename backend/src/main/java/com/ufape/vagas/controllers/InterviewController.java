@@ -40,10 +40,7 @@ public class InterviewController {
             interview.setFeedback(details.getFeedback());
             interview.setStatus(details.getStatus());
             
-            if (details.getApplication() != null) {
-                interview.setApplication(details.getApplication());
-            }
-            
+           
             Interview updated = interviewService.save(interview);
             return ResponseEntity.ok(updated);
         }).orElse(ResponseEntity.notFound().build());

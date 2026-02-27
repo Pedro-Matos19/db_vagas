@@ -4,6 +4,7 @@ import com.ufape.vagas.models.Skill;
 import com.ufape.vagas.repositories.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +23,23 @@ public class SkillService {
         return skillRepository.findById(id);
     }
 
+    @Transactional
     public Skill save(Skill skill) {
         return skillRepository.save(skill);
     }
 
+    @Transactional
     public void deleteById(Long id) {
-        skillRepository.deleteById(id);
+        Optional<Skill> skillOpt = skillRepository.findById(id);
+        if (skillOpt.isPresent()) {
+            Skill skill = skillOpt.get();
+            if (skill.getCandidates() != null) {
+                skill.getCandidates().forEach(candidate -> candidate.getSkills().remove(skill));
+            }
+            if (skill.getRequiredInJobs() != null) {
+                skill.getRequiredInJobs().forEach(job -> job.getRequiredSkills().remove(skill));
+            }
+            skillRepository.deleteById(id);
+        }
     }
 }

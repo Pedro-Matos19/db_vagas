@@ -53,7 +53,6 @@ public class Job {
         this.requiredSkills = requiredSkills; 
     }
 
-    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getTitle() { return title; }

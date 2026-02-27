@@ -44,7 +44,6 @@ public class Candidate {
 
     public Candidate() {}
 
-    // CONSTRUTOR DO SEU COLEGA ADICIONADO AQUI
     public Candidate(String cpf, String name, LocalDate birthDate, User user, List<Skill> skills, List<Course> courses) {
         super();
         this.cpf = cpf;
@@ -55,7 +54,6 @@ public class Candidate {
         this.courses = courses;
     }
 
-    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getCpf() { return cpf; }

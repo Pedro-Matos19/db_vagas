@@ -15,10 +15,10 @@ public class Interview {
     @Column(name = "data_hora")
     private LocalDateTime dateTime;
 
-    @Column(name = "link_local", length = 100)
+    @Column(name = "link_local", length = 1000)
     private String location;
 
-    @Column(name = "feedback", columnDefinition = "TEXT")
+    @Column(name = "feedback", length = 1000)
     private String feedback;
 
     @Column(name = "status", length = 30)
@@ -30,7 +30,7 @@ public class Interview {
 
     public Interview() {}
 
-    // Getters e Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
