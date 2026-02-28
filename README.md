@@ -110,17 +110,18 @@ docker exec -it mysql_vagas mysql -uuser -ppassword vagas_db
 
 ---
 
-## 5. Documentação (Dicionário de Dados e Normalização)
+## 5. Documentação (Dicionário de Dados, Metadados e Normalização)
 
-Toda a documentação estrutural do banco de dados, incluindo a descrição das tabelas e a justificativa das regras de negócio aplicadas na modelagem, está centralizada nesta etapa.
+Toda a documentação estrutural do banco de dados, incluindo a descrição das tabelas, prints da estrutura física e a justificativa das regras de negócio aplicadas na modelagem, está centralizada nesta etapa.
 
 A documentação pode ser consultada através de:
 
 - **Documentos em PDF incluídos no repositório (pasta `doc/`):**
   📄 [Dicionário de Dados (PDF)](doc/Dicionario_de_dados.pdf)
+  📄 [Metadados (PDF)](doc/Metadados.pdf)
   📄 [Normalização dos Dados (PDF)](doc/Normalização_Dos_Dados.pdf)
 
-- **Metadados do próprio banco de dados:** Acessíveis via ferramentas como DBeaver (aba *Columns* e coluna *Comment*).
+- **Acesso direto via SGBD:** Os metadados também continuam acessíveis diretamente via ferramentas como DBeaver (aba *Columns* e coluna *Comment*).
 
 - **Scripts SQL:** Arquivos de criação das tabelas (`ddl.sql`).
 
@@ -130,12 +131,15 @@ A documentação pode ser consultada através de:
 - Restrições (PK, FK, UNIQUE, NOT NULL, DEFAULT).
 - Significado de cada atributo.
 
+**O Documento de Metadados contempla:**
+- Capturas de tela (prints) detalhadas da estrutura física de todas as 13 tabelas, extraídas diretamente da ferramenta de administração (DBeaver), comprovando a implementação e os tipos de dados adotados.
+
 **O Documento de Normalização contempla:**
 - A justificativa rigorosa do processo de modelagem.
 - O detalhamento da decomposição de atributos multivalorados para atender à Primeira Forma Normal (1FN).
 - O tratamento de dependências em tabelas com chaves compostas para garantir a Segunda Forma Normal (2FN).
----
 
+---
 ## 6. Visões SQL (Views) Analíticas
 
 Para abstrair a complexidade do banco de dados, otimizar consultas e facilitar a extração de informações estratégicas (reduzindo a necessidade de múltiplos `JOINs` no backend), foram implementadas **3 Visões (Views)** principais.
