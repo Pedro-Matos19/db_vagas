@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS vagas_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE vagas_db;
+
 set foreign_key_checks = 0;
 
 CREATE TABLE Usuario (

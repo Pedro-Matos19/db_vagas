@@ -8,17 +8,14 @@ services:
       MYSQL_DATABASE: vagas_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
       - '3307:3306'
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test:
-        [
-          'CMD-SHELL',
-          'mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD || exit 1',
-        ]
+      test: [ 'CMD-SHELL', 'mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD || exit 1' ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,7 +27,7 @@ services:
     ports:
       - '8080:8080'
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vagas_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vagas_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&useUnicode=true
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
     depends_on:

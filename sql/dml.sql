@@ -1,5 +1,8 @@
 use vagas_db;
 
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
 INSERT INTO Usuario (e_mail, senha) VALUES
 ('mariaDaSilva@hotmail.com', 'mds123'),
 ('pedrohm@gmail.com', 'phm456'),
