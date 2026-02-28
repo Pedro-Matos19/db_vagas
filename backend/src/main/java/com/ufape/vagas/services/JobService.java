@@ -12,10 +12,12 @@ import com.ufape.vagas.models.Application;
 import com.ufape.vagas.models.Company;
 import com.ufape.vagas.models.Interview;
 import com.ufape.vagas.models.Job;
+import com.ufape.vagas.models.JobPerformanceSummary;
 import com.ufape.vagas.models.Skill;
 import com.ufape.vagas.repositories.ApplicationRepository;
 import com.ufape.vagas.repositories.CompanyRepository;
 import com.ufape.vagas.repositories.InterviewRepository;
+import com.ufape.vagas.repositories.JobPerformanceSummaryRepository;
 import com.ufape.vagas.repositories.JobRepository;
 import com.ufape.vagas.repositories.SkillRepository;
 
@@ -36,6 +38,13 @@ public class JobService {
 
     @Autowired
     private InterviewRepository interviewRepository;
+
+    @Autowired
+    private JobPerformanceSummaryRepository jobPerformanceSummaryRepository;
+
+    public List<JobPerformanceSummary> findTop5JobPerformanceSummaries() {
+        return jobPerformanceSummaryRepository.findTop5Details();
+    }
 
     public List<Job> findAll() {
         return jobRepository.findAll();

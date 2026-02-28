@@ -1,8 +1,10 @@
 package com.ufape.vagas.services;
 
 import com.ufape.vagas.models.Application;
+import com.ufape.vagas.models.DetailsApplication;
 import com.ufape.vagas.models.Interview;
 import com.ufape.vagas.repositories.ApplicationRepository;
+import com.ufape.vagas.repositories.DetailsApplicationRepository;
 import com.ufape.vagas.repositories.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,13 @@ public class ApplicationService {
 
     @Autowired
     private InterviewRepository interviewRepository;
+
+    @Autowired
+    private DetailsApplicationRepository detailsApplicationRepository;
+
+    public List<DetailsApplication> findTop5DetailsApplications() {
+        return detailsApplicationRepository.findTop5Details();
+    }
 
     public List<Application> findAll() {
         return applicationRepository.findAll();
@@ -37,7 +46,7 @@ public class ApplicationService {
     public void deleteById(Long id) {
         List<Interview> interviews = interviewRepository.findByApplicationId(id);
         interviewRepository.deleteAll(interviews);
-        
+
         applicationRepository.deleteById(id);
     }
 }

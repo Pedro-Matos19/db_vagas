@@ -70,3 +70,38 @@ export interface Application {
   candidate: Candidate;
   job: Job;
 }
+
+export interface ApplicationDetail {
+  idCandidatura: number;
+  nomeCandidato: string;
+  tituloVaga: string;
+  nomeEmpresa: string;
+  dataAplicacao: string;
+  statusCandidatura: string;
+}
+
+export interface InterviewScheduleDetail {
+  idInterview: number;
+  interviewDateTime: string;
+  candidateName: string;
+  jobTitle: string;
+  companyName: string;
+  meetingLink: string;
+  interviewStatus: string;
+}
+
+export interface JobPerformanceSummaryId {
+  companyName: string;
+  jobTitle: string;
+  jobStatus: string;
+  salary: number;
+}
+
+export interface JobPerformanceSummaryItem {
+  id: JobPerformanceSummaryId;
+  totalCandidates: number;
+  jobTitle: string;
+  jobStatus: string;
+  salary: number;
+  companyName: string;
+}

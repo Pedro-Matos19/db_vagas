@@ -2,6 +2,7 @@ package com.ufape.vagas.controllers;
 
 import com.ufape.vagas.dto.JobRequest;
 import com.ufape.vagas.models.Job;
+import com.ufape.vagas.models.JobPerformanceSummary;
 import com.ufape.vagas.services.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,11 @@ public class JobController {
     @GetMapping
     public List<Job> getAllJobs() {
         return jobService.findAll();
+    }
+
+    @GetMapping("/performance-summary")
+    public List<JobPerformanceSummary> getJobPerformanceSummary() {
+        return jobService.findTop5JobPerformanceSummaries();
     }
 
     @GetMapping("/{id}")

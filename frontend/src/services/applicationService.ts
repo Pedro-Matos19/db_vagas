@@ -1,5 +1,10 @@
-import { type Application } from '../types';
+import { type Application, type ApplicationDetail } from '../types';
 import api from './api';
+
+export const getApplicationDetails = async () => {
+  const response = await api.get<ApplicationDetail[]>('/api/applications/details');
+  return response.data;
+};
 
 export const getApplications = async () => {
   const response = await api.get<Application[]>('/api/applications');

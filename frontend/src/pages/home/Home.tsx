@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import RecentInterviewsSection from '../../components/RecentInterviewsSection';
+import RecentApplicationsSection from '../../components/RecentApplicationsSection';
+import JobPerformanceSummarySection from '../../components/JobPerformanceSummarySection';
 
 interface DashboardCardProps {
   title: string;
@@ -29,7 +32,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ title, description, to, c
 const Home: React.FC = () => {
   return (
     <div className="space-y-8">
-      <div className="text-center py-10 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-xl text-white mb-10">
+      <div className="text-center py-10 bg-linear-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-xl text-white mb-10">
         <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
           Bem-vindo ao Vagas<span className="text-yellow-400">DB</span>
         </h1>
@@ -37,6 +40,10 @@ const Home: React.FC = () => {
           Gerencie candidatos, empresas e oportunidades em um só lugar.
         </p>
       </div>
+
+      <RecentInterviewsSection />
+      <RecentApplicationsSection />
+      <JobPerformanceSummarySection />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <DashboardCard

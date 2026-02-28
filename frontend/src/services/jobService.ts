@@ -1,5 +1,10 @@
-import { type Job, type JobRequest } from '../types';
+import { type Job, type JobRequest, type JobPerformanceSummaryItem } from '../types';
 import api from './api';
+
+export const getJobPerformanceSummary = async () => {
+  const response = await api.get<JobPerformanceSummaryItem[]>('/api/jobs/performance-summary');
+  return response.data;
+};
 
 export const getJobs = async () => {
   const response = await api.get<Job[]>('/api/jobs');

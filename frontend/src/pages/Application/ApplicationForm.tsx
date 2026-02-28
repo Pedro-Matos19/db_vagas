@@ -63,14 +63,14 @@ const ApplicationForm: React.FC = () => {
   const handleRelationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name === 'candidateId') {
-      setApplication((prev) => ({ 
-        ...prev, 
-        candidate: { id: Number(value) } as Candidate 
+      setApplication((prev) => ({
+        ...prev,
+        candidate: { id: Number(value) } as Candidate
       }));
     } else if (name === 'jobId') {
-      setApplication((prev) => ({ 
-        ...prev, 
-        job: { id: Number(value) } as Job 
+      setApplication((prev) => ({
+        ...prev,
+        job: { id: Number(value) } as Job
       }));
     }
   };
@@ -82,7 +82,7 @@ const ApplicationForm: React.FC = () => {
 
     try {
       if (id) {
-        if (!application.id) return; 
+        if (!application.id) return;
         await updateApplication(Number(id), application as Application);
       } else {
         await createApplication(application as Application);
@@ -112,8 +112,7 @@ const ApplicationForm: React.FC = () => {
       )}
 
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md space-y-4">
-        
-        {/* Se for edição, mostra apenas texto. Se for criação, mostra selects */}
+
         {id ? (
           <div className="mb-4">
             <p><strong>Candidato:</strong> {application.candidate?.name}</p>

@@ -1,6 +1,7 @@
 package com.ufape.vagas.controllers;
 
 import com.ufape.vagas.models.Interview;
+import com.ufape.vagas.models.InterviewSchedule;
 import com.ufape.vagas.services.InterviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,11 @@ public class InterviewController {
     @GetMapping
     public List<Interview> getAllInterviews() {
         return interviewService.findAll();
+    }
+
+    @GetMapping("/schedule")
+    public List<InterviewSchedule> getInterviewSchedule() {
+        return interviewService.findTop5InterviewSchedules();
     }
 
     @GetMapping("/{id}")

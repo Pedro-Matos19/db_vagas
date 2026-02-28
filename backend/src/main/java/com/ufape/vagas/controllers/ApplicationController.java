@@ -1,6 +1,7 @@
 package com.ufape.vagas.controllers;
 
 import com.ufape.vagas.models.Application;
+import com.ufape.vagas.models.DetailsApplication;
 import com.ufape.vagas.services.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,11 @@ public class ApplicationController {
         return applicationService.findAll();
     }
 
+    @GetMapping("/details")
+    public List<DetailsApplication> getDetailsApplications() {
+        return applicationService.findTop5DetailsApplications();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Application> getApplicationById(@PathVariable Long id) {
         return applicationService.findById(id)
@@ -36,14 +42,14 @@ public class ApplicationController {
     public ResponseEntity<Application> updateApplication(@PathVariable Long id, @RequestBody Application details) {
         return applicationService.findById(id).map(application -> {
             application.setStatus(details.getStatus());
-            
+
             if (details.getCandidate() != null) {
                 application.setCandidate(details.getCandidate());
             }
             if (details.getJob() != null) {
                 application.setJob(details.getJob());
             }
-            
+
             Application updated = applicationService.save(application);
             return ResponseEntity.ok(updated);
         }).orElse(ResponseEntity.notFound().build());
