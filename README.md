@@ -1,8 +1,14 @@
 # Projeto de Banco de Dados – Sistema de Vagas e Currículos
 
-Este repositório contém o banco de dados do **Sistema de Vagas e Currículos**, desenvolvido como parte da avaliação da disciplina de Banco de Dados.
+Este repositório contém a aplicação completa (Backend, Frontend e Banco de Dados) do **Sistema de Vagas e Currículos**, desenvolvido como parte da avaliação da 2ª VA da disciplina de Banco de Dados.
 
-O projeto contempla o esquema lógico relacional, normalização, dicionário de dados, scripts SQL de criação e carga de dados, além da execução completa via Docker.
+O projeto contempla o CRUD completo, extração de informações estratégicas através de Visões (Views), esquema lógico relacional, normalização, dicionário de dados, e execução integral via Docker.
+
+## Integrantes do Grupo
+- [Pedro Henrique Matos Oliveira](https://github.com/Pedro-Matos19)
+- [Antônio Carlos Batista Vaz](https://github.com/AntonioCVaz)
+- [João Henrique Araújo de Souza](https://github.com/jota-aga)
+- [José Uilton Ferreira de Siqueira](https://github.com/joseuilton)
 
 ---
 
@@ -65,23 +71,23 @@ Após esses passos, o banco MySQL estará em funcionamento, com todas as tabelas
 
 ## 3. Criação e povoamento do banco de dados
 
-A criação das tabelas e a carga de dados são realizadas automaticamente através dos scripts SQL presentes na pasta `sql/`, montada no container no diretório padrão `/docker-entrypoint-initdb.d`.
+A criação das tabelas, a carga de dados e a geração das visões (Views) são realizadas automaticamente através dos scripts SQL presentes na pasta `sql/`, montada no container no diretório padrão `/docker-entrypoint-initdb.d`.
 
 ### 3.1 Estrutura dos scripts
 
-- **`sql/ddl.sql`**: Script de criação das tabelas (DDL).
-- **`sql/dml.sql`**: Script de inserção de dados de teste (DML).
+- **`sql/ddl.sql`**: Script de criação das tabelas e relacionamentos (DDL).
+- **`sql/dml.sql`**: Script de inserção de dados de teste (DML). O povoamento do banco teve seu conteúdo gerado de forma automatizada usando *prompts* no **Gemini (IA)**. O script atende rigorosamente a todos os requisitos do documento de entrega, garantindo no mínimo 50 registros realistas por tabela principal, mantendo a integridade perfeita das chaves estrangeiras.
+- **`sql/views.sql`**: Script contendo a criação das 3 visões (Views) analíticas do sistema, unindo múltiplas tabelas para abstrair consultas complexas.
 
 Os scripts são executados automaticamente na primeira inicialização do container MySQL.
 
 ### 3.2 Recriação do banco
-Caso seja necessário recriar o banco e executar novamente os scripts:
+Caso seja necessário recriar o banco e executar novamente os scripts (útil para limpar o banco e forçar a leitura das views e novos dados):
 
 ```bash
 docker compose down -v
-docker compose up -d
+docker compose up -d```
 ```
-
 ---
 
 ## 4. Conexão com o banco de dados
@@ -104,65 +110,54 @@ docker exec -it mysql_vagas mysql -uuser -ppassword vagas_db
 
 ---
 
-## 5. Dicionário de Dados
+## 5. Documentação (Dicionário de Dados e Normalização)
 
-O dicionário de dados do sistema descreve a finalidade de cada tabela, os atributos, tipos de dados, restrições e a semântica associada a cada campo.
+Toda a documentação estrutural do banco de dados, incluindo a descrição das tabelas e a justificativa das regras de negócio aplicadas na modelagem, está centralizada nesta etapa.
 
-O dicionário pode ser consultado através de:
+A documentação pode ser consultada através de:
 
-- **Documento em PDF incluído no repositório:**
+- **Documentos em PDF incluídos no repositório (pasta `doc/`):**
   📄 [Dicionário de Dados (PDF)](doc/Dicionario_de_dados.pdf)
+  📄 [Normalização dos Dados (PDF)](doc/Normalização_Dos_Dados.pdf)
 
-- **Metadados do próprio banco de dados:** Acessíveis via DBeaver (aba *Columns* e coluna *Comment*).
+- **Metadados do próprio banco de dados:** Acessíveis via ferramentas como DBeaver (aba *Columns* e coluna *Comment*).
 
-- **Scripts SQL:** Arquivos de criação das tabelas.
+- **Scripts SQL:** Arquivos de criação das tabelas (`ddl.sql`).
 
-As informações contemplam:
-- Descrição das tabelas
-- Tipos de dados (INT, VARCHAR, DATE, etc.)
-- Restrições (PK, FK, UNIQUE, NOT NULL, DEFAULT)
-- Significado de cada atributo
+**O Dicionário de Dados contempla:**
+- Descrição da finalidade de cada tabela.
+- Tipos de dados (INT, VARCHAR, DATE, etc.).
+- Restrições (PK, FK, UNIQUE, NOT NULL, DEFAULT).
+- Significado de cada atributo.
+
+**O Documento de Normalização contempla:**
+- A justificativa rigorosa do processo de modelagem.
+- O detalhamento da decomposição de atributos multivalorados para atender à Primeira Forma Normal (1FN).
+- O tratamento de dependências em tabelas com chaves compostas para garantir a Segunda Forma Normal (2FN).
+---
+
+## 6. Visões SQL (Views) Analíticas
+
+Para abstrair a complexidade do banco de dados, otimizar consultas e facilitar a extração de informações estratégicas (reduzindo a necessidade de múltiplos `JOINs` no backend), foram implementadas **3 Visões (Views)** principais.
+
+Os scripts de criação encontram-se no arquivo `sql/views.sql` e as visões são geradas automaticamente na inicialização do container.
+
+### 6.1 Detalhamento das Visões
+
+1. **`v_detalhes_candidaturas`**
+   - **Objetivo**: Fornecer um panorama completo e legível das candidaturas no sistema.
+   - **Complexidade abstraída**: Une **4 tabelas** (`Candidatura`, `Estudante`, `Vaga` e `Empresa`).
+   - **Utilidade**: Evita a reescrita de consultas complexas no backend ao listar as aplicações do sistema, retornando o nome do candidato, o título da vaga e a empresa de forma direta.
+
+2. **`v_agenda_entrevistas`**
+   - **Objetivo**: Consolidar a agenda de entrevistas para facilitar a visualização por painéis de RH ou painéis do aluno.
+   - **Complexidade abstraída**: Une **5 tabelas** (`Entrevista`, `Candidatura`, `Estudante`, `Vaga` e `Empresa`).
+   - **Utilidade**: Retorna datas, status e os links das reuniões já vinculados aos nomes reais dos candidatos e das empresas envolvidas.
+
+3. **`v_resumo_desempenho_vagas`**
+   - **Objetivo**: Gerar um relatório analítico do engajamento e concorrência das vagas.
+   - **Complexidade abstraída**: Realiza cálculos de agregação (`COUNT`) unindo as tabelas `Vaga`, `Empresa` e `Candidatura`.
+   - **Utilidade**: Processa a contagem de candidatos diretamente no banco de dados, entregando uma métrica pronta (total de candidatos por vaga) sem sobrecarregar a memória da aplicação Java.
 
 ---
 
-## 6. Consultas para validação
-   Algumas consultas SQL para validação do banco:
-
-```bash
-- SHOW TABLES;
-
-- SELECT \* FROM Usuario;
-- SELECT \* FROM Empresa;
-- SELECT \* FROM Estudante;
-- SELECT \* FROM Vaga;
-- SELECT \* FROM Candidatura;
-```
-
----
-
-## 7. Normalização
-
-O processo de modelagem do banco de dados seguiu rigorosamente as regras de normalização para evitar redundâncias e anomalias. O esquema lógico resultante atende à **Segunda Forma Normal (2FN)**, conforme justificado abaixo:
-
-### Primeira Forma Normal (1FN)
-Para atender à 1FN, garantiu-se que todos os atributos fossem atômicos e monovalorados.
-
-- **Decomposição de Multivalorados:** No modelo conceitual, o atributo "telefone" do estudante era multivalorado. Para respeitar a 1FN, este atributo foi removido da tabela `Estudante` e transformado em uma tabela própria denominada `Telefone_Estudante`, onde cada número ocupa uma linha distinta vinculada ao ID do aluno.
-
-### Segunda Forma Normal (2FN)
-O esquema está em conformidade com a 2FN, pois não existem dependências parciais nas tabelas que possuem chaves primárias compostas.
-
-- **Tabelas Associativas:** As tabelas oriundas de relacionamentos N:N, como `Estuda` (Estudante-Curso), `Possui` (Estudante-Habilidade) e `Requer` (Vaga-Habilidade), possuem chaves compostas. Nestas tabelas, não existem colunas não-chave que dependam apenas de uma parte da chave.
-- **Integridade:** Nas demais tabelas com chaves simples (como `Vaga` ou `Empresa`), todos os atributos dependem totalmente da chave primária inteira.
-
----
-
-## 8. Carga de Dados e Povoamento
-
-O povoamento do banco de dados foi realizado através da execução de scripts de Manipulação de Dados (DML) contendo comandos `INSERT` padrão da linguagem SQL.
-
-Optou-se pela criação manual de um conjunto de dados fictícios para validar as regras de integridade referencial e simular o funcionamento real do sistema. O processo foi estruturado da seguinte forma:
-
-- **Script de Carga:** Foi desenvolvido um arquivo dedicado (`dml.sql`) contendo as inserções ordenadas para respeitar as dependências das chaves estrangeiras (ex: primeiro cria-se o Usuário, depois o Estudante, depois o Currículo).
-- **Automação via Docker:** Para garantir a reprodutibilidade do ambiente, o script de carga foi configurado no container Docker para ser executado automaticamente logo após a criação das tabelas (DDL).
-- **Dados de Teste:** Foram inseridos registros em todas as tabelas principais e associativas (como `Candidatura` e `Possui`), permitindo testar consultas e verificar o comportamento das restrições de unicidade e não-nulidade.
