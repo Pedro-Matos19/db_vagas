@@ -80,6 +80,14 @@ export interface ApplicationDetail {
   statusCandidatura: string;
 }
 
+export interface InterviewRequest {
+  application: { id: number };
+  dateTime: string;
+  location: string;
+  feedback?: string;
+  status?: string;
+}
+
 export interface InterviewScheduleDetail {
   idInterview: number;
   interviewDateTime: string;

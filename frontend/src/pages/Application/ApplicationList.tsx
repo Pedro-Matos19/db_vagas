@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { deleteApplication, getApplications } from '../../services/applicationService';
-import { type Application } from '../../types';
+import { createInterview } from '../../services/interviewService';
+import { type Application, type InterviewRequest } from '../../types';
 
 const ApplicationList: React.FC = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [showInterviewModal, setShowInterviewModal] = useState(false);
+  const [selectedApplicationId, setSelectedApplicationId] = useState<number | null>(null);
+  const [interviewData, setInterviewData] = useState({
+    dateTime: '',
+    location: '',
+  });
 
   useEffect(() => {
     loadApplications();
@@ -34,6 +42,36 @@ const ApplicationList: React.FC = () => {
         alert('Erro ao excluir candidatura.');
         console.error(err);
       }
+    }
+  };
+
+  const handleOpenInterviewModal = (appId: number) => {
+    setSelectedApplicationId(appId);
+    setInterviewData({ dateTime: '', location: '' });
+    setShowInterviewModal(true);
+  };
+
+  const handleScheduleInterview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedApplicationId) return;
+
+    try {
+      const interviewRequest: InterviewRequest = {
+        application: { id: selectedApplicationId },
+        dateTime: new Date(interviewData.dateTime).toISOString(),
+        location: interviewData.location,
+        status: 'Agendada',
+        feedback: '',
+      };
+
+      await createInterview(interviewRequest);
+      
+      setShowInterviewModal(false);
+      alert('Entrevista agendada com sucesso! O status da candidatura será atualizado automaticamente.');
+      loadApplications(); 
+    } catch (err) {
+      alert('Erro ao agendar entrevista.');
+      console.error(err);
     }
   };
 
@@ -66,15 +104,23 @@ const ApplicationList: React.FC = () => {
               <strong>Vaga:</strong> {application.job?.title}
             </p>
             <div className="flex justify-end space-x-2 mt-4">
+              {application.status !== 'Em Entrevista' && (
+                <button
+                  onClick={() => handleOpenInterviewModal(application.id!)}
+                  className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm"
+                >
+                  Agendar Entrevista
+                </button>
+              )}
               <Link
                 to={`/applications/${application.id}`}
-                className="text-yellow-600 hover:text-yellow-800"
+                className="text-yellow-600 hover:text-yellow-800 px-3 py-1"
               >
                 Editar
               </Link>
               <button
                 onClick={() => handleDelete(application.id!)}
-                className="text-red-600 hover:text-red-800"
+                className="text-red-600 hover:text-red-800 px-3 py-1"
               >
                 Excluir
               </button>
@@ -82,6 +128,51 @@ const ApplicationList: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {showInterviewModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-lg w-96">
+            <h2 className="text-xl font-bold mb-4">Agendar Entrevista</h2>
+            <form onSubmit={handleScheduleInterview}>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2">Data e Hora</label>
+                <input
+                  type="datetime-local"
+                  required
+                  className="w-full border p-2 rounded"
+                  value={interviewData.dateTime}
+                  onChange={(e) => setInterviewData({ ...interviewData, dateTime: e.target.value })}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2">Local / Link</label>
+                <input
+                  type="text"
+                  required
+                  className="w-full border p-2 rounded"
+                  value={interviewData.location}
+                  onChange={(e) => setInterviewData({ ...interviewData, location: e.target.value })}
+                />
+              </div>
+              <div className="flex justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setShowInterviewModal(false)}
+                  className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Salvar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
