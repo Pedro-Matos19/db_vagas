@@ -137,4 +137,19 @@ public class CandidateService {
 		candidateRepository.save(candidate);
 
 	}
+	
+	@Transactional
+	public void enableCandidate(Long id) {
+		Optional<Candidate> candidateOpt = candidateRepository.findById(id);
+
+		Candidate candidate = candidateOpt.orElseThrow(() -> new IdNotFoundException());
+
+		User user = candidate.getUser();
+		user.setStatus(UserStatus.ATIVO);
+
+
+		candidateRepository.save(candidate);
+	}
+
+	
 }

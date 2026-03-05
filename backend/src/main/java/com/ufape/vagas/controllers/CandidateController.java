@@ -60,4 +60,12 @@ public class CandidateController {
         
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+    
+    @PutMapping("/enable/{id}")
+    public ResponseEntity<?> unableCandidate(@PathVariable Long id) {
+        candidateService.enableCandidate(id);
+        
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+}
 }
