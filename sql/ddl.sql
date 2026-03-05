@@ -48,7 +48,7 @@ CREATE TABLE Habilidade (
     id_habilidade INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(30) NOT NULL
 );
-CREATE TABLE Possui (
+CREATE TABLE Possui_Habilidade (
     id_estudante INT NOT NULL,
     id_habilidade INT NOT NULL,
     PRIMARY KEY(id_estudante, id_habilidade),
@@ -62,7 +62,7 @@ CREATE TABLE Curso (
     nome_curso VARCHAR(80) NOT NULL,
     nivel VARCHAR(50)
 );
-CREATE TABLE Estuda (
+CREATE TABLE Estuda_Curso (
     id_estudante INT NOT NULL,
     id_curso INT NOT NULL,
     PRIMARY KEY(id_estudante, id_curso),
@@ -82,7 +82,7 @@ CREATE TABLE Vaga (
     CONSTRAINT fk_vaga_id_empresa
         FOREIGN KEY (id_empresa) REFERENCES Empresa(id_empresa)
 );
-CREATE TABLE Requer (
+CREATE TABLE Requer_Habilidade (
     id_vaga INT NOT NULL,
     id_habilidade INT NOT NULL,
     PRIMARY KEY(id_vaga, id_habilidade),
