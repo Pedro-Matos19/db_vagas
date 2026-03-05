@@ -3,6 +3,7 @@ package com.ufape.vagas.controllers;
 import com.ufape.vagas.models.User;
 import com.ufape.vagas.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody User user) {
-        return userService.save(user);
+        return userService.create(user);
     }
 
     @GetMapping
@@ -46,10 +47,8 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        if (userService.findById(id).isPresent()) {
-            userService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    	userService.disableUser(id);
+    	
+    	return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

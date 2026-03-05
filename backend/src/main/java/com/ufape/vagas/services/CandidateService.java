@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ufape.vagas.dto.CandidateRequest;
+import com.ufape.vagas.enums.ApplicationStatus;
+import com.ufape.vagas.enums.InterviewStatus;
+import com.ufape.vagas.enums.UserStatus;
+import com.ufape.vagas.exceptions.IdNotFoundException;
 import com.ufape.vagas.models.Application;
 import com.ufape.vagas.models.Candidate;
 import com.ufape.vagas.models.Course;
@@ -17,9 +21,7 @@ import com.ufape.vagas.models.User;
 import com.ufape.vagas.repositories.ApplicationRepository;
 import com.ufape.vagas.repositories.CandidateRepository;
 import com.ufape.vagas.repositories.CourseRepository;
-import com.ufape.vagas.repositories.CurriculumRepository;
 import com.ufape.vagas.repositories.InterviewRepository;
-import com.ufape.vagas.repositories.PhoneRepository;
 import com.ufape.vagas.repositories.SkillRepository;
 import com.ufape.vagas.repositories.UserRepository;
 
@@ -37,12 +39,6 @@ public class CandidateService {
     
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private PhoneRepository phoneRepository;
-
-    @Autowired
-    private CurriculumRepository curriculumRepository;
 
     @Autowired
     private ApplicationRepository applicationRepository;
@@ -117,30 +113,28 @@ public class CandidateService {
         return candidateRepository.save(candidate);
     }
 
-    @Transactional
-    public void deleteById(Long id) {
-        Optional<Candidate> candidateOpt = candidateRepository.findById(id);
-        if (candidateOpt.isPresent()) {
-            Candidate candidate = candidateOpt.get();
+	@Transactional
+	public void disableCandidate(Long id) {
+		Optional<Candidate> candidateOpt = candidateRepository.findById(id);
 
-            phoneRepository.findByCandidateId(id).forEach(phone -> phoneRepository.delete(phone));
+		Candidate candidate = candidateOpt.orElseThrow(() -> new IdNotFoundException());
 
-            curriculumRepository.findByCandidateId(id).ifPresent(curriculum -> curriculumRepository.delete(curriculum));
+		User user = candidate.getUser();
+		user.setStatus(UserStatus.INATIVO);
 
-            List<Application> applications = applicationRepository.findByCandidateId(id);
-            for (Application app : applications) {
-                List<Interview> interviews = interviewRepository.findByApplicationId(app.getId());
-                interviewRepository.deleteAll(interviews);
-                applicationRepository.delete(app);
-            }
+		List<Application> applications = applicationRepository.findByCandidateId(id);
 
-            candidate.getSkills().clear();
-            candidate.getCourses().clear();
-            candidateRepository.save(candidate);
+		for (Application a : applications) {
+			a.setStatus(ApplicationStatus.CANCELADA);
+			List<Interview> interviews = interviewRepository.findByApplicationId(a.getId());
+			interviews.forEach(i -> {
+				if (i.getStatus() != InterviewStatus.REALIZADA)
+					i.setStatus(InterviewStatus.CANCELADA);
+			});
+			a.setInterviews(interviews);
+		}
 
-            candidateRepository.deleteById(id);
+		candidateRepository.save(candidate);
 
-            userRepository.deleteById(id);
-        }
-    }
+	}
 }

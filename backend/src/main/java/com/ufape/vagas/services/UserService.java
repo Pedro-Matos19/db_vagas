@@ -1,5 +1,7 @@
 package com.ufape.vagas.services;
 
+import com.ufape.vagas.enums.UserStatus;
+import com.ufape.vagas.exceptions.IdNotFoundException;
 import com.ufape.vagas.models.User;
 import com.ufape.vagas.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,21 @@ public class UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
+    
+    public User create(User user) {
+    	user.setStatus(UserStatus.ATIVO);
+    	user = save(user);
+    	
+    	return user;
+    }
 
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
+    public void disableUser(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        
+        User user = optionalUser.orElseThrow(() -> new IdNotFoundException());
+        
+        user.setStatus(UserStatus.INATIVO);
+        
+        save(user);
     }
 }

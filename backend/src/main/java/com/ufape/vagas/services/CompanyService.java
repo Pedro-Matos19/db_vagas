@@ -1,5 +1,12 @@
 package com.ufape.vagas.services;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ufape.vagas.models.Application;
 import com.ufape.vagas.models.Company;
 import com.ufape.vagas.models.Interview;
@@ -10,12 +17,6 @@ import com.ufape.vagas.repositories.CompanyRepository;
 import com.ufape.vagas.repositories.InterviewRepository;
 import com.ufape.vagas.repositories.JobRepository;
 import com.ufape.vagas.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CompanyService {

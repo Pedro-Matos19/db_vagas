@@ -29,4 +29,10 @@ public class GlobalExceptionHandler {
         
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
+    
+    @ExceptionHandler(IdNotFoundException.class)
+    public ResponseEntity<Object> handleIdNotFoundException(IdNotFoundException ex) {
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }

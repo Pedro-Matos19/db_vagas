@@ -1,7 +1,19 @@
 package com.ufape.vagas.models;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+
+import com.ufape.vagas.enums.InterviewStatus;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Entrevista")
@@ -22,7 +34,8 @@ public class Interview {
     private String feedback;
 
     @Column(name = "status", length = 30)
-    private String status;
+    @Enumerated(value = EnumType.STRING)
+    private InterviewStatus status;
 
     @ManyToOne
     @JoinColumn(name = "id_candidatura", nullable = false)
@@ -42,10 +55,16 @@ public class Interview {
 
     public String getFeedback() { return feedback; }
     public void setFeedback(String feedback) { this.feedback = feedback; }
+	public InterviewStatus getStatus() {
+		return status;
+	}
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
 
-    public Application getApplication() { return application; }
+	public void setStatus(InterviewStatus status) {
+		this.status = status;
+	}
+
+
+	public Application getApplication() { return application; }
     public void setApplication(Application application) { this.application = application; }
 }

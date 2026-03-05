@@ -1,6 +1,15 @@
 package com.ufape.vagas.models;
 
-import jakarta.persistence.*;
+import com.ufape.vagas.enums.UserStatus;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Usuario") 
@@ -16,6 +25,9 @@ public class User {
 
     @Column(name = "senha", nullable = false, length = 100)
     private String password;
+    
+    @Enumerated(value = EnumType.STRING)
+    private UserStatus status;
 
     public User() {}
 
@@ -27,4 +39,12 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+	public UserStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(UserStatus status) {
+		this.status = status;
+	}
 }

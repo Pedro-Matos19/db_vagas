@@ -1,7 +1,22 @@
 package com.ufape.vagas.models;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.ufape.vagas.enums.ApplicationStatus;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Candidatura")
@@ -11,9 +26,10 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_candidatura")
     private Long id;
-
-    @Column(name = "status_atual", length = 30)
-    private String status = "Em análise";
+    
+    @Column(name = "status_atual")
+    @Enumerated(value = EnumType.STRING)
+    private ApplicationStatus status;
 
     @ManyToOne
     @JoinColumn(name = "id_estudante", nullable = false)
@@ -25,14 +41,17 @@ public class Application {
 
     @Column(name = "data_aplicacao")
     private LocalDateTime applicationDate = LocalDateTime.now();
+    
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
+    private List<Interview> interviews;
 
     public Application() {}
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public ApplicationStatus getStatus() { return status; }
+    public void setStatus(ApplicationStatus status) { this.status = status; }
 
     public LocalDateTime getApplicationDate() { return applicationDate; }
     public void setApplicationDate(LocalDateTime applicationDate) { this.applicationDate = applicationDate; }
@@ -42,4 +61,12 @@ public class Application {
 
     public Job getJob() { return job; }
     public void setJob(Job job) { this.job = job; }
+
+	public List<Interview> getInterviews() {
+		return interviews;
+	}
+
+	public void setInterviews(List<Interview> interviews) {
+		this.interviews = interviews;
+	}
 }
