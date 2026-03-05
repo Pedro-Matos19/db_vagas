@@ -68,4 +68,4 @@ public class CandidateController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
-}
+

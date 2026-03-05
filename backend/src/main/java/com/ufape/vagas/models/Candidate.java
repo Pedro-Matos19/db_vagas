@@ -39,7 +39,7 @@ public class Candidate {
 
     @ManyToMany
     @JoinTable(
-        name = "Possui",
+        name = "Possui_Habilidade",
         joinColumns = @JoinColumn(name = "id_estudante"),
         inverseJoinColumns = @JoinColumn(name = "id_habilidade")
     )
@@ -47,7 +47,7 @@ public class Candidate {
 
     @ManyToMany
     @JoinTable(
-        name = "Estuda",
+        name = "Estuda_Curso",
         joinColumns = @JoinColumn(name = "id_estudante"),
         inverseJoinColumns = @JoinColumn(name = "id_curso")
     )

@@ -34,7 +34,7 @@ public class Job {
 
     @ManyToMany
     @JoinTable(
-        name = "Requer",
+        name = "Requer_Habilidade",
         joinColumns = @JoinColumn(name = "id_vaga"),
         inverseJoinColumns = @JoinColumn(name = "id_habilidade")
     )
