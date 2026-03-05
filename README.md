@@ -100,7 +100,11 @@ O banco pode ser acessado por ferramentas gráficas como MySQL Workbench ou DBea
 - **Usuário:** user
 - **Senha:** password
 
-A porta `3307` foi utilizada para evitar conflitos com instalações locais do MySQL.
+### 4.1 Portas da Aplicação
+Certifique-se de que as portas abaixo estejam livres na sua máquina para acessar o sistema:
+- **Frontend (Interface do Usuário):** `http://localhost:3000`
+- **Backend (API):** `http://localhost:8080`
+- **Banco de Dados (MySQL):** Porta `3307`
 
 Também é possível acessar o banco via terminal utilizando o comando abaixo:
 
