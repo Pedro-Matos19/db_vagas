@@ -6,7 +6,8 @@ set foreign_key_checks = 0;
 CREATE TABLE Usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     e_mail VARCHAR(100) UNIQUE NOT NULL,
-    senha VARCHAR(100) NOT NULL
+    senha VARCHAR(100) NOT NULL,
+	status VARCHAR(30) DEFAULT 'ATIVO'
 );
 CREATE TABLE Empresa (
     id_empresa INT PRIMARY KEY ,
