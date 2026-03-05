@@ -374,7 +374,7 @@ INSERT INTO Curso (nome_curso, nivel) VALUES
 ('User Experience (UX)', 'Pós-graduação'),
 ('Bioinformática', 'Mestrado');
 
-INSERT INTO Possui (id_estudante, id_habilidade) VALUES
+INSERT INTO Possui_Habilidade (id_estudante, id_habilidade) VALUES
 (3, 1),
 (3, 2),
 (3, 6),
@@ -426,7 +426,7 @@ INSERT INTO Possui (id_estudante, id_habilidade) VALUES
 (40, 11), (40, 12), (40, 35),
 (41, 13), (41, 14), (41, 36);
 
-INSERT INTO Estuda (id_estudante, id_curso) VALUES
+INSERT INTO Estuda_Curso (id_estudante, id_curso) VALUES
 (3, 1),
 (4, 2),
 (5, 1),
@@ -485,7 +485,7 @@ INSERT INTO Vaga (id_empresa, titulo, descricao, tipo, bolsa_salario, status) VA
 (8, 'Estágio Comercial', 'Prospecção ativa de clientes.', 'Estágio', 1200.00, 'Aberta'),
 (11, 'Analista de Crédito Jr', 'Análise de risco financeiro.', 'CLT', 2600.00, 'Aberta');
 
-INSERT INTO Requer (id_vaga, id_habilidade) VALUES
+INSERT INTO Requer_Habilidade (id_vaga, id_habilidade) VALUES
 
 (1, 1), (1, 2), (1, 6),
 (2, 2), (2, 7), (2, 6),
