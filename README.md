@@ -78,6 +78,7 @@ A criação das tabelas, a carga de dados e a geração das visões (Views) são
 - **`sql/ddl.sql`**: Script de criação das tabelas e relacionamentos (DDL).
 - **`sql/dml.sql`**: Script de inserção de dados de teste (DML). O povoamento do banco teve seu conteúdo gerado de forma automatizada usando *prompts* no **Gemini (IA)**. O script atende rigorosamente a todos os requisitos do documento de entrega, garantindo no mínimo 50 registros realistas por tabela principal, mantendo a integridade perfeita das chaves estrangeiras.
 - **`sql/views.sql`**: Script contendo a criação das 3 visões (Views) analíticas do sistema, unindo múltiplas tabelas para abstrair consultas complexas.
+- **`sql/triggers.sql`**: Script de criação do trigger que atualiza automaticamente o status da candidatura quando uma entrevista é agendada.
 
 Os scripts são executados automaticamente na primeira inicialização do container MySQL.
 
@@ -86,7 +87,7 @@ Caso seja necessário recriar o banco e executar novamente os scripts (útil par
 
 ```bash
 docker compose down -v
-docker compose up -d```
+docker compose up -d
 ```
 ---
 
@@ -169,3 +170,52 @@ Os scripts de criação encontram-se no arquivo `sql/views.sql` e as visões sã
 
 ---
 
+## 7. Trigger – Atualização automática do status da candidatura
+
+Para manter o **status da candidatura** sempre alinhado ao fluxo do processo seletivo (evitando inconsistências e lógica espalhada no backend), foi implementado **1 trigger** no banco de dados.
+
+O script de criação encontra-se no arquivo `sql/triggers.sql`. O trigger é criado na inicialização do container ou pode ser aplicado manualmente via cliente `mysql`.
+
+### 7.1 Detalhamento do trigger
+
+**`trg_atualiza_status_candidatura_entrevista`**
+
+- **Objetivo**: Garantir que, sempre que uma entrevista for agendada para uma candidatura, o status dessa candidatura passe a refletir essa etapa, sem depender de atualização manual no backend.
+- **Regra de negócio automatizada**: *"Ao ser criado um novo registro em `Entrevista` para uma candidatura, o status da candidatura correspondente deve ser atualizado para `ENTREVISTA`."* Assim, a tabela `Candidatura` permanece consistente com a tabela `Entrevista`: se existe entrevista cadastrada, o `status_atual` da candidatura indica que ela está em fase de entrevista.
+- **Complexidade abstraída**: O trigger dispara **AFTER INSERT** na tabela `Entrevista` e executa um **UPDATE** na tabela `Candidatura` usando `NEW.id_candidatura`, mantendo a relação entre as duas tabelas e evitando que a aplicação precise lembrar de atualizar o status em toda inserção de entrevista.
+- **Utilidade**: Centraliza a regra no banco, reduz erros de esquecimento de atualização no backend e mantém relatórios e visões (como `v_detalhes_candidaturas` e `v_agenda_entrevistas`) sempre com o status correto.
+
+### 7.2 Como testar o trigger
+
+1. **Preparar dados**: Garanta que exista pelo menos uma candidatura (por exemplo, com `status_atual` diferente de `'ENTREVISTA'`, e.g. `'Candidato'` ou `'Em análise'`).
+
+2. **Inserir uma entrevista**: Crie um novo registro em `Entrevista` referenciando o `id_candidatura` dessa candidatura:
+
+   ```sql
+   USE vagas_db;
+
+   -- Exemplo: assumindo id_candidatura = 1
+   INSERT INTO Entrevista (id_candidatura, data_hora, link_local, status)
+   VALUES (1, NOW(), 'https://meet.example.com/abc', 'Agendada');
+   ```
+
+3. **Verificar o efeito**: Confira se o status da candidatura foi atualizado automaticamente:
+
+   ```sql
+   SELECT id_candidatura, status_atual
+   FROM Candidatura
+   WHERE id_candidatura = 1;
+   ```
+
+   O campo `status_atual` deve exibir `'ENTREVISTA'`.
+
+---
+
+## 8. Ajustes implementados a partir da correção da iteração passada
+
+### 8.1 "Algumas funcionalidades como excluir candidado ou atualizar empresa não estão funcionado, uma mensagem de erro genérica é exibida é "Erro de integridade de dados. Verifique se os dados já estão cadastrados.""
+
+Revisão dos fluxos e iteratividade das telas e ajustes realizados para permitir o CRUD completo de todas as entidades
+
+### 8.2 "Faltou colocar as portas nas quais a aplicação está rodando"
+Portas do backend, frontend e banco de dados adicionados ao `README.md`
