@@ -3,6 +3,8 @@ package com.ufape.vagas.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.ufape.vagas.enums.JobStatus;
+
 public record JobRequest(
     String title,
 
@@ -12,7 +14,7 @@ public record JobRequest(
 
     BigDecimal salary,
 
-    String status,
+    JobStatus status,
 
     Long companyId,
     

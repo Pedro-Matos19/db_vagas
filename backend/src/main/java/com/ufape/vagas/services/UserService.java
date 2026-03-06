@@ -29,7 +29,7 @@ public class UserService {
     }
     
     public User create(User user) {
-    	user.setStatus(UserStatus.ATIVO);
+    	user.enableStatus();
     	user = save(user);
     	
     	return user;
@@ -40,7 +40,7 @@ public class UserService {
         
         User user = optionalUser.orElseThrow(() -> new IdNotFoundException());
         
-        user.setStatus(UserStatus.INATIVO);
+        user.disableStatus();;
         
         save(user);
     }

@@ -1,6 +1,16 @@
 package com.ufape.vagas.models;
 
-import jakarta.persistence.*;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Empresa")
@@ -58,4 +68,5 @@ public class Company {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+
 }

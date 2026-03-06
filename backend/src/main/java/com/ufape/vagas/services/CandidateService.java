@@ -120,7 +120,7 @@ public class CandidateService {
 		Candidate candidate = candidateOpt.orElseThrow(() -> new IdNotFoundException());
 
 		User user = candidate.getUser();
-		user.setStatus(UserStatus.INATIVO);
+		user.disableStatus();;
 
 		List<Application> applications = applicationRepository.findByCandidateId(id);
 
@@ -131,7 +131,6 @@ public class CandidateService {
 				if (i.getStatus() != InterviewStatus.REALIZADA)
 					i.setStatus(InterviewStatus.CANCELADA);
 			});
-			a.setInterviews(interviews);
 		}
 
 		candidateRepository.save(candidate);
@@ -145,7 +144,7 @@ public class CandidateService {
 		Candidate candidate = candidateOpt.orElseThrow(() -> new IdNotFoundException());
 
 		User user = candidate.getUser();
-		user.setStatus(UserStatus.ATIVO);
+		user.enableStatus();;
 
 
 		candidateRepository.save(candidate);

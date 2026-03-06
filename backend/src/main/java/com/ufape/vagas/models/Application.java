@@ -41,10 +41,7 @@ public class Application {
 
     @Column(name = "data_aplicacao")
     private LocalDateTime applicationDate = LocalDateTime.now();
-    
-    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
-    private List<Interview> interviews;
-
+ 
     public Application() {}
 
     public Long getId() { return id; }
@@ -61,12 +58,4 @@ public class Application {
 
     public Job getJob() { return job; }
     public void setJob(Job job) { this.job = job; }
-
-	public List<Interview> getInterviews() {
-		return interviews;
-	}
-
-	public void setInterviews(List<Interview> interviews) {
-		this.interviews = interviews;
-	}
 }

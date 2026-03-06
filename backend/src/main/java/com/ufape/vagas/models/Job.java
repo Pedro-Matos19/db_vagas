@@ -1,8 +1,22 @@
 package com.ufape.vagas.models;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+
+import com.ufape.vagas.enums.JobStatus;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Vaga")
@@ -25,8 +39,8 @@ public class Job {
     @Column(name = "bolsa_salario", precision = 10, scale = 2)
     private BigDecimal salary;
 
-    @Column(name = "status", length = 30)
-    private String status = "Aberta";
+    @Enumerated(value = EnumType.STRING)
+    private JobStatus status;
 
     @ManyToOne
     @JoinColumn(name = "id_empresa", nullable = false)
@@ -42,7 +56,7 @@ public class Job {
 
     public Job() {}
 
-    public Job(String title, String description, String type, BigDecimal salary, String status, Company company, List<Skill> requiredSkills) {
+    public Job(String title, String description, String type, BigDecimal salary, JobStatus status, Company company, List<Skill> requiredSkills) {
         super();
         this.title = title;
         this.description = description;
@@ -63,10 +77,17 @@ public class Job {
     public void setType(String type) { this.type = type; }
     public BigDecimal getSalary() { return salary; }
     public void setSalary(BigDecimal salary) { this.salary = salary; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
     public Company getCompany() { return company; }
     public void setCompany(Company company) { this.company = company; }
     public List<Skill> getRequiredSkills() { return requiredSkills; }
     public void setRequiredSkills(List<Skill> requiredSkills) { this.requiredSkills = requiredSkills; }
+
+	public JobStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(JobStatus status) {
+		this.status = status;
+	}
+    
 }

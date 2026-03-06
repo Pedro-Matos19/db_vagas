@@ -52,9 +52,6 @@ public class Candidate {
         inverseJoinColumns = @JoinColumn(name = "id_curso")
     )
     private List<Course> courses;
-    
-    @OneToMany(mappedBy = "candidate",cascade = CascadeType.ALL)
-    private List<Application> applications;
 
     public Candidate() {}
 

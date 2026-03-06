@@ -3,6 +3,7 @@ package com.ufape.vagas.controllers;
 import com.ufape.vagas.models.Company;
 import com.ufape.vagas.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,11 +49,14 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
-        if (companyService.findById(id).isPresent()) {
-            companyService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> disableCompany(@PathVariable Long id) {
+    	companyService.disableCompany(id);
+    	return ResponseEntity.status(HttpStatus.OK).build();
+    }
+    
+    @PutMapping("/unable/{id}")
+    public ResponseEntity<Void> unableCompany(@PathVariable Long id) {
+    	companyService.unableCompany(id);
+    	return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
