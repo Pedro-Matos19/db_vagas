@@ -580,7 +580,7 @@ INSERT INTO Candidatura (id_estudante, id_vaga, status_atual) VALUES
 (50, 15, 'ENTREVISTA'),
 (33, 20, 'EM_ANALISE');
 
-INSERT INTO ENTREVISTA (id_candidatura, data_hora, link_local, feedback, status) VALUES
+INSERT INTO Entrevista (id_candidatura, data_hora, link_local, feedback, status) VALUES
 (1, '2026-02-05 14:00:00', 'Google Meet', 'Perfil aderente para backend', 'AGENDADA'),
 (3, '2026-02-06 10:30:00', 'Google Meet', 'Boa base em frontend', 'AGENDADA'),
 (4, '2026-02-07 09:00:00', 'Presencial - ByteWorks', 'Avaliando fit cultural', 'AGENDADA'),

@@ -3,7 +3,19 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createJob, getJobById, updateJob } from '../../services/jobService';
 import { getCompanies } from '../../services/companyService';
 import { getSkills } from '../../services/skillService';
-import {  type JobRequest, type Company, type Skill } from '../../types';
+import { type JobRequest, type Company, type Skill } from '../../types';
+
+const jobStatuses = {
+  'Aberta': 'ABERTA',
+  'Fechada': 'FECHADA',
+  'Em análise': 'EM_ANALISE'
+}
+
+const jobStatusesReverse = {
+  'ABERTA': 'Aberta',
+  'FECHADA': 'Fechada',
+  'EM_ANALISE': 'Em análise'
+}
 
 const JobForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -84,9 +96,15 @@ const JobForm: React.FC = () => {
 
     try {
       if (id) {
-        await updateJob(Number(id), job);
+        await updateJob(Number(id), {
+          ...job,
+          status: jobStatuses[job.status as keyof typeof jobStatuses],
+        });
       } else {
-        await createJob(job);
+        await createJob({
+          ...job,
+          status: jobStatuses[job.status as keyof typeof jobStatuses],
+        });
       }
       navigate('/jobs');
     } catch (err) {
@@ -200,7 +218,7 @@ const JobForm: React.FC = () => {
           <select
             id="status"
             name="status"
-            value={job.status}
+            value={jobStatusesReverse[job.status as keyof typeof jobStatusesReverse]}
             onChange={handleChange}
             className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
           >

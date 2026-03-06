@@ -60,15 +60,15 @@ const ApplicationList: React.FC = () => {
         application: { id: selectedApplicationId },
         dateTime: new Date(interviewData.dateTime).toISOString(),
         location: interviewData.location,
-        status: 'Agendada',
+        status: 'AGENDADA',
         feedback: '',
       };
 
       await createInterview(interviewRequest);
-      
+
       setShowInterviewModal(false);
       alert('Entrevista agendada com sucesso! O status da candidatura será atualizado automaticamente.');
-      loadApplications(); 
+      loadApplications();
     } catch (err) {
       alert('Erro ao agendar entrevista.');
       console.error(err);

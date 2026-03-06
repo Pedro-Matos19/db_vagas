@@ -8,7 +8,7 @@ services:
       MYSQL_DATABASE: vagas_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --log-bin-trust-function-creators=1
     ports:
       - '3307:3306'
     volumes:
