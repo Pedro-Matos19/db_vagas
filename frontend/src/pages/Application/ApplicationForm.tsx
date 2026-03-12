@@ -176,11 +176,11 @@ const ApplicationForm: React.FC = () => {
             onChange={handleChange}
             className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
           >
-            <option value="Pendente">Pendente</option>
-            <option value="Em análise">Em análise</option>
-            <option value="Entrevista Agendada">Entrevista Agendada</option>
-            <option value="Aprovado">Aprovado</option>
-            <option value="Rejeitado">Rejeitado</option>
+            <option value="SUBMETIDA">Submetida</option>
+            <option value="EM_ANALISE">Em análise</option>
+            <option value="ENTREVISTA">Entrevista Agendada</option>
+            <option value="APROVADO">Aprovado</option>
+            <option value="REJEITADO">Rejeitado</option>
           </select>
         </div>
 
